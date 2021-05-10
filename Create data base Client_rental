@@ -1,0 +1,53 @@
+sudo -i -u postgres
+create database client_rental;
+psql -d demo -U postgres
+
+CREATE TABLE Client
+client_rental-# ( clientNo text PRIMARY KEY, cName CHARACTER VARYING(30));
+
+INSERT INTO Client VALUES (CR76, John Kay);
+INSERT INTO Client VALUES ('CR56', 'Aline Stewart');
+
+CREATE TABLE Owner
+(ownerNo text PRIMARY KEY,
+oName CHARACTER VARYING(30));
+INSERT INTO Owner VALUES ('CO40', 'Tina Murphy');
+INSERT INTO Owner VALUES ('CO93', 'Tony Shaw');
+
+CREATE TABLE PropertyForRent (
+propertyNo text,
+pAddress text,
+rent integer,
+PRIMARY KEY (propertyNo),
+ownerno text,
+FOREIGN KEY (ownerno) REFERENCES Owner (ownerNo)
+ON DELETE CASCADE
+ON UPDATE CASCADE
+);
+
+INSERT INTO PropertyForRent VALUES ('PG4','6 Lawrence
+St,Glasgow',350,'CO40');
+INSERT INTO PropertyForRent VALUES ('PG16','5 Novar
+Dr,Glasgow',450,'CO93');
+INSERT INTO PropertyForRent VALUES ('PG36','2 Manor
+Rd,Glasgow’,375,'CO93');
+
+CREATE TABLE Rental (
+clientNo text,
+propertyNo text,
+rentStart date,
+rentFinish date,
+FOREIGN KEY (clientNo) REFERENCES Client (clientNo) ON DELETE CASCADE
+ON UPDATE CASCADE,
+FOREIGN KEY (propertyNo) REFERENCES PropertyForRent (propertyNo) ON DELETE
+CASCADE
+ON UPDATE CASCADE
+);
+SET datestyle TO DMY;
+
+INSERT INTO Rental VALUES ('CR76','PG4','1-07-2012','31-08-2013');
+INSERT INTO Rental VALUES ('CR76','PG4','1-07-2012','31-08-2013');
+INSERT INTO Rental VALUES ('CR76','PG16','1-09-2013','1-09-2014');
+INSERT INTO Rental VALUES ('CR56','PG4','1-09-2011','10-06-2012');
+INSERT INTO Rental VALUES ('CR56','PG36','10-10-2012','1-12-2013');
+INSERT INTO Rental VALUES ('CR56','PG16','1-11-2014','10-08-2015');
